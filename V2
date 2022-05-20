@@ -1,0 +1,72 @@
+from tkinter import *
+from tkinter import ttk
+import random
+import math
+ 
+root = Tk()
+root.geometry("649x500")
+root.config(bg = "#4369db")
+ 
+#Use less files for trialling, also use a seperate defining method for correct answer
+def quizbegin():
+    CorrectAnswersList = []
+    AnswersList = []
+    QuestionsList = []
+    correctanswer = open("G:/documents/python/13PRG EOY/CorrectAnswer.txt", "r")
+    CorrectAnswer = ((correctanswer.read()).split("\n"))
+    allanswers = open("G:/documents/python/13PRG EOY/AllAnswers.txt", "r")
+    AllAnswers = ((allanswers.read()).split("\n"))
+    questions = open("G:/documents/python/13PRG EOY/Questions.txt", "r")
+    Questions = ((questions.read()).split("|"))
+    for main in range (len(Questions)):
+        num = (random.randint(1, (len(Questions))))
+        AnswersList.append(((AllAnswers).pop(num-1)).split("\n"))
+        QuestionsList.append(((Questions).pop(num-1)).split("|"))
+        CorrectAnswersList.append(((CorrectAnswer).pop(num-1)).split("\n"))
+    quizmenu = Toplevel()
+    quizmenu.geometry("649x500")
+    quizmenu.config(bg = "#4369db")
+    title3 = Label(quizmenu, text=QuestionsList[main], bg = "#4369db", font=("Cooper Black", 18))
+    title3.place(x=210, y=0, anchor="nw")
+ 
+ 
+def close():
+    root.destroy()
+ 
+def begin():
+    firstmenu = Toplevel()
+    firstmenu.geometry("649x500")
+    firstmenu.config(bg = "#4369db")
+    title2 = Label(firstmenu, text="Information:", bg = "#4369db", font=("Cooper Black", 16))
+    title2.place(x=250, y=0, anchor="nw")
+    subtitle = Label(firstmenu, text="This is a quiz about year 9 math designed to gage", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle.place(x=120, y=60, anchor="nw")
+    subtitle2 = Label(firstmenu, text="your knowledge of the subject", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle2.place(x=180, y=81, anchor="nw")
+    msg = Label(firstmenu, text="• All questions will include multiple choice or true or false answers", bg = "#4369db", font=("Cooper Black", 11))
+    msg.place(x=10, y=142, anchor="nw")
+    msg2 = Label(firstmenu, text="• Answers will be rounded to 2 d.p", bg = "#4369db", font=("Cooper Black", 11))
+    msg2.place(x=10, y=163, anchor="nw")
+    msg3 = Label(firstmenu, text="• There will also be a button included to skip any number of questions", bg = "#4369db", font=("Cooper Black", 11))
+    msg3.place(x=10, y=184, anchor="nw")
+    msg4 = Label(firstmenu, text="• After you have answered a question you will be required to hit a button to", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=10, y=205, anchor="nw")
+    msg4 = Label(firstmenu, text="   answer another question", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=14, y=226, anchor="nw")
+    next1 = Button(firstmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+    next1.place(x=490, y=10, width=125, height=37)
+ 
+ 
+title = Label(root, text="Year 9 Math Quiz", bg = "#4369db", font=("Cooper Black", 18))
+title.place(x=210, y=0, anchor="nw")
+ 
+start1 = Button(root, text="Start", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: begin())
+start1.place(x=40, y=231.5, width=125, height=37)
+ 
+quit1 = Button(root, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
+quit1.place(x=480, y=231.5, width=125, height=37)
+ 
+CorrectNum = 0
+QuizNum = 12
+ 
+root.mainloop()
