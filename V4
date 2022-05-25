@@ -1,0 +1,109 @@
+from ast import Pass
+from tkinter import *
+from tkinter import ttk
+import random
+import math
+ 
+root = Tk()
+root.geometry("649x500")
+root.config(bg = "#4369db")
+ 
+#Use less files for trialling, also use a seperate defining method for correct answer
+def quizbegin():
+    main2 = 0
+    CorrectAnswersList = []
+    AnswersList = []
+    QuestionsList = []
+    correctanswer = open("D:/Python/13PRG/CorrectAnswer.txt", "r")
+    CorrectAnswer = ((correctanswer.read()).split("\n"))
+    allanswers = open("D:/Python/13PRG/AllAnswers.txt", "r")
+    AllAnswers = ((allanswers.read()).split("\n"))
+    questions = open("D:/Python/13PRG/Questions.txt", "r")
+    Questions = ((questions.read()).split("|"))
+    for main in range (len(Questions)):
+        num = (random.randint(1, (len(Questions))))
+        AnswersList.append((AllAnswers).pop(num-1))
+        QuestionsList.append((Questions).pop(num-1))
+        CorrectAnswersList.append((CorrectAnswer).pop(num-1))
+    CurrentAnswer1 = []
+    CurrentAnswer2 = []
+    CurrentAnswer3 = []
+    CurrentAnswer4 = []
+    for main1 in range (len(AnswersList)):
+        try:
+            CurrentAnswers = str(AnswersList[main1-1]).split(",")
+            (CurrentAnswer1).append((CurrentAnswers).pop(0))
+            (CurrentAnswer2).append((CurrentAnswers).pop(1))
+            (CurrentAnswer3).append((CurrentAnswers).pop(2))
+            (CurrentAnswer4).append((CurrentAnswers).pop(3))
+        except:
+            CurrentAnswers = str(AnswersList[main1-1]).split(",")
+            (CurrentAnswer1).append((CurrentAnswers).pop(0))
+            (CurrentAnswer2).append((CurrentAnswers).pop(1))
+            (CurrentAnswer3).append("null")
+            (CurrentAnswer4).append("null")
+   
+    quizmenu = Toplevel()
+    quizmenu.geometry("649x500")
+    quizmenu.config(bg = "#4369db")
+    title3 = Label(quizmenu, text=QuestionsList[main2], bg = "#4369db", font=("Cooper Black", 16))
+    title3.place(x=324, y=0, anchor="n")
+    skip = Button(quizmenu, text="Skip", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+    skip.place(x=7.5, y=448, width=634, height=37)
+    if(CurrentAnswer3) == ("null"):
+        radiobutton1 = Radiobutton(quizmenu, text=(CurrentAnswer1[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton1.place(x=7.5, y=448, width=634, height=37)
+        radiobutton2 = Radiobutton(quizmenu, text=(CurrentAnswer2[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton2.place(x=7.5, y=448, width=634, height=37)
+    else:
+        radiobutton1 = Radiobutton(quizmenu, text=(CurrentAnswer1[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton1.place(x=7.5, y=448, width=634, height=37)
+        radiobutton2 = Radiobutton(quizmenu, text=(CurrentAnswer2[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton2.place(x=7.5, y=448, width=634, height=37)
+        radiobutton3 = Radiobutton(quizmenu, text=(CurrentAnswer3[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton3.place(x=7.5, y=448, width=634, height=37)
+        radiobutton4 = Radiobutton(quizmenu, text=(CurrentAnswer4[main2]), bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+        radiobutton4.place(x=7.5, y=448, width=634, height=37)
+    main2 +=1
+ 
+ 
+def close():
+    root.destroy()
+ 
+def begin():
+    firstmenu = Toplevel()
+    firstmenu.geometry("649x500")
+    firstmenu.config(bg = "#4369db")
+    title2 = Label(firstmenu, text="Information:", bg = "#4369db", font=("Cooper Black", 16))
+    title2.place(x=250, y=0, anchor="nw")
+    subtitle = Label(firstmenu, text="This is a quiz about year 9 math designed to gage", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle.place(x=120, y=60, anchor="nw")
+    subtitle2 = Label(firstmenu, text="your knowledge of the subject", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle2.place(x=180, y=81, anchor="nw")
+    msg = Label(firstmenu, text="• All questions will include multiple choice or true or false answers", bg = "#4369db", font=("Cooper Black", 11))
+    msg.place(x=10, y=142, anchor="nw")
+    msg2 = Label(firstmenu, text="• Answers will be rounded to 2 d.p", bg = "#4369db", font=("Cooper Black", 11))
+    msg2.place(x=10, y=163, anchor="nw")
+    msg3 = Label(firstmenu, text="• There will also be a button included to skip any number of questions", bg = "#4369db", font=("Cooper Black", 11))
+    msg3.place(x=10, y=184, anchor="nw")
+    msg4 = Label(firstmenu, text="• After you have answered a question you will be required to hit a button to", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=10, y=205, anchor="nw")
+    msg4 = Label(firstmenu, text="   answer another question", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=14, y=226, anchor="nw")
+    next1 = Button(firstmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+    next1.place(x=490, y=10, width=125, height=37)
+ 
+ 
+title = Label(root, text="Year 9 Math Quiz", bg = "#4369db", font=("Cooper Black", 18))
+title.place(x=210, y=0, anchor="nw")
+ 
+start1 = Button(root, text="Start", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: begin())
+start1.place(x=40, y=231.5, width=125, height=37)
+ 
+quit1 = Button(root, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
+quit1.place(x=480, y=231.5, width=125, height=37)
+ 
+CorrectNum = 0
+QuizNum = 12
+ 
+root.mainloop()
