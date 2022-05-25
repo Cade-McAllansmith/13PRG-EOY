@@ -31,15 +31,15 @@ def quizbegin():
     CurrentAnswer4 = []
     for main1 in range (len(AnswersList)):
         try:
-            CurrentAnswers = str(AnswersList[main1-1]).split(",")
-            (CurrentAnswer1).append((CurrentAnswers).pop(0))
-            (CurrentAnswer2).append((CurrentAnswers).pop(1))
-            (CurrentAnswer3).append((CurrentAnswers).pop(2))
-            (CurrentAnswer4).append((CurrentAnswers).pop(3))
+            (AnswersList[main1-1]).split(",")
+            (CurrentAnswer1).append((AnswersList[main1-1]).pop(0))
+            (CurrentAnswer2).append((AnswersList[main1-1]).pop(1))
+            (CurrentAnswer3).append((AnswersList[main1-1]).pop(2))
+            (CurrentAnswer4).append((AnswersList[main1-1]).pop(3))
         except:
-            CurrentAnswers = str(AnswersList[main1-1]).split(",")
-            (CurrentAnswer1).append((CurrentAnswers).pop(0))
-            (CurrentAnswer2).append((CurrentAnswers).pop(1))
+            (AnswersList[main1-1]).split(",")
+            (CurrentAnswer1).append((AnswersList[main1-1]).pop(0))
+            (CurrentAnswer2).append((AnswersList[main1-1]).pop(1))
             (CurrentAnswer3).append("null")
             (CurrentAnswer4).append("null")
    
