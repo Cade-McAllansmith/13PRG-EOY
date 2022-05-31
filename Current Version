@@ -4,7 +4,11 @@ from tkinter import *
 from tkinter import ttk
 import random
 import math
- 
+
+#image1 = PhotoImage(file="ImagesList[main2]")
+#labelphoto2 = Label(secondmenu, image=image1, width=100, height=100, bg = "#4369db")
+#labelphoto2.place(x=625, y=1, anchor="ne")
+
 root = Tk()
 root.geometry("649x500+303+259")
 root.config(bg = "#4369db")
@@ -17,9 +21,9 @@ start1.place(x=40, y=231.5, width=125, height=37)
  
 quit1 = Button(root, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
 quit1.place(x=480, y=231.5, width=125, height=37)
- 
-CorrectNum = 0
-QuizNum = 12
+
+
+QUIZNUM = 12
  
 def begin():
     global QuestionsList
@@ -37,6 +41,7 @@ def begin():
     CorrectAnswersList = []
     AnswersList = []
     QuestionsList = []
+    ImagesList = []
     CurrentAnswer1 = []
     CurrentAnswer2 = []
     CurrentAnswer3 = []
@@ -63,17 +68,20 @@ def begin():
     msg4.place(x=14, y=226, anchor="nw")
     next1 = Button(firstmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
     next1.place(x=490, y=10, width=125, height=37)
-    correctanswer = open("D:/Python/13PRG/CorrectAnswer.txt", "r")
+    correctanswer = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/CorrectAnswer.txt", "r")
     CorrectAnswer = ((correctanswer.read()).split("\n"))
-    allanswers = open("D:/Python/13PRG/AllAnswers.txt", "r")
+    images = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/Images.txt", "r")
+    Images = ((images.read()).split("\n"))
+    allanswers = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/AllAnswers.txt", "r")
     AllAnswers = ((allanswers.read()).split("\n"))
-    questions = open("D:/Python/13PRG/Questions.txt", "r")
+    questions = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/Questions.txt", "r")
     Questions = ((questions.read()).split("|"))
     for main in range (len(Questions)):
         num = (random.randint(0, (len(Questions)-1)))
         AnswersList.append((AllAnswers).pop(num))
         QuestionsList.append((Questions).pop(num))
         CorrectAnswersList.append((CorrectAnswer).pop(num))
+        ImagesList.append((Images).pop(num))
     for main1 in range (len(AnswersList)):
         CurrentAnswers = str(AnswersList[main1]).split(",")
         try:
@@ -169,7 +177,7 @@ def incorrectanswer():
     incorrect = 1
     TotalAnswers += 1
     postquestion()
-    if TotalAnswers == 12:
+    if TotalAnswers == QUIZNUM:
         quizcomplete()
 
 def correctanswer():
@@ -180,7 +188,7 @@ def correctanswer():
     CorrectAnswers += 1
     postquestion()
     TotalAnswers += 1
-    if TotalAnswers == 12:
+    if TotalAnswers == QUIZNUM:
         quizcomplete()
 
 def postquestion():
@@ -202,19 +210,19 @@ def quizcomplete():
     title3.place(x=324, y=0, anchor="n")
     grade = Label(quizmenu, text="{}/12" .format (CorrectAnswers),  bg = "#4369db", font=("Cooper Black", 12))
     grade.place(x=324, y=30, anchor="n")
-    if CorrectAnswers < 4:
+    if CorrectAnswers <= (float(QUIZNUM/4)):
         title3.config(text="Not Achieved")
         msg = Label(quizmenu, text="Nice try!", bg = "#4369db", font=("Cooper Black", 12))
         msg.place(x=324, y=50, anchor="n")
-    elif CorrectAnswers < 7:
+    elif CorrectAnswers <= (float(QUIZNUM/2)):
         title3.config(text="Achieved")
         msg = Label(quizmenu, text="Getting there!", bg = "#4369db", font=("Cooper Black", 12))
         msg.place(x=324, y=50, anchor="n")
-    elif CorrectAnswers < 10:
+    elif CorrectAnswers <= (float(QUIZNUM*0.75)):
         title3.config(text="Merit")
         msg = Label(quizmenu, text="Nearly at an excellence!", bg = "#4369db", font=("Cooper Black", 12))
         msg.place(x=324, y=50, anchor="n")
-    elif CorrectAnswers < 13:
+    elif CorrectAnswers <= (float(QUIZNUM)):
         title3.config(text="Excellence")
         msg = Label(quizmenu, text="Congratulations!", bg = "#4369db", font=("Cooper Black", 12))
         msg.place(x=324, y=50, anchor="n")
@@ -233,7 +241,7 @@ def retake():
     global TotalAnswers
     global CorrectAnswers
     global retaken
-    for main3 in range (12):
+    for main3 in range (QUIZNUM):
         QuestionsList.pop(0)
         CurrentAnswer4.pop(0)
         CurrentAnswer3.pop(0)
