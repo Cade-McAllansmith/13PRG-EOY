@@ -4,10 +4,7 @@ from tkinter import *
 from tkinter import ttk
 import random
 import math
-
-#image1 = PhotoImage(file="ImagesList[main2]")
-#labelphoto2 = Label(secondmenu, image=image1, width=100, height=100, bg = "#4369db")
-#labelphoto2.place(x=625, y=1, anchor="ne")
+from tkinter import filedialog
 
 root = Tk()
 root.geometry("649x500+303+259")
@@ -29,6 +26,7 @@ def begin():
     global QuestionsList
     global AnswersList
     global CorrectAnswersList
+    global ImagesList
     global CurrentAnswer1
     global CurrentAnswer2
     global CurrentAnswer3
@@ -64,17 +62,17 @@ def begin():
     msg3.place(x=10, y=184, anchor="nw")
     msg4 = Label(firstmenu, text="• After you have answered a question you will be required to hit a button to", bg = "#4369db", font=("Cooper Black", 11))
     msg4.place(x=10, y=205, anchor="nw")
-    msg4 = Label(firstmenu, text="   answer another question", bg = "#4369db", font=("Cooper Black", 11))
+    msg4 = Label(firstmenu, text=" answer another question", bg = "#4369db", font=("Cooper Black", 11))
     msg4.place(x=14, y=226, anchor="nw")
     next1 = Button(firstmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
     next1.place(x=490, y=10, width=125, height=37)
-    correctanswer = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/CorrectAnswer.txt", "r")
+    correctanswer = open("E:/CorrectAnswer.txt", "r")
     CorrectAnswer = ((correctanswer.read()).split("\n"))
-    images = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/Images.txt", "r")
+    images = open("E:/Images.txt", "r")
     Images = ((images.read()).split("\n"))
-    allanswers = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/AllAnswers.txt", "r")
+    allanswers = open("E:/AllAnswers.txt", "r")
     AllAnswers = ((allanswers.read()).split("\n"))
-    questions = open("//internal.glendowie-college.school.nz/users/Home/Students/18031/Documents/Python/13PRG EOY/Questions.txt", "r")
+    questions = open("E:/Questions.txt", "r")
     Questions = ((questions.read()).split("|"))
     for main in range (len(Questions)):
         num = (random.randint(0, (len(Questions)-1)))
@@ -112,6 +110,7 @@ def quizbegin():
     global title3
     global skip
     global quizmenu
+    global image1
     main2 = 0
     firstmenu.geometry("+9999+9999")
    
@@ -122,6 +121,9 @@ def quizbegin():
     title3.place(x=324, y=0, anchor="n")
     skip = Button(quizmenu, text="Skip", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: Skip())
     skip.place(x=7.5, y=448, width=634, height=37)
+    image1 = PhotoImage(file=ImagesList[main2])
+    labelphoto2 = Label(quizmenu, image=image1, width=555, height=355, bg = "#4369db")
+    labelphoto2.place(x=7.5, y=75)
     if(CurrentAnswer3[main2]) == ("null"):
         radiobutton1 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: correctanswer())
         radiobutton1.place(x=630, y=60)
@@ -162,12 +164,13 @@ def quizbegin():
 
 def Skip():
     global main2
-    QuestionsList.append((QuestionsList).pop(main2))
-    CurrentAnswer4.append((CurrentAnswer4).pop(main2))
-    CurrentAnswer3.append((CurrentAnswer3).pop(main2))
-    CurrentAnswer2.append((CurrentAnswer2).pop(main2))
-    CurrentAnswer1.append((CurrentAnswer1).pop(main2))
-    CorrectAnswersList.append((CorrectAnswersList).pop(main2))
+    QuestionsList.append((QuestionsList).pop(0))
+    CurrentAnswer4.append((CurrentAnswer4).pop(0))
+    CurrentAnswer3.append((CurrentAnswer3).pop(0))
+    CurrentAnswer2.append((CurrentAnswer2).pop(0))
+    CurrentAnswer1.append((CurrentAnswer1).pop(0))
+    CorrectAnswersList.append((CorrectAnswersList).pop(0))
+    ImagesList.append((ImagesList).pop(0))
     newwindow()
     main2 -=1
  
@@ -248,6 +251,7 @@ def retake():
         CurrentAnswer2.pop(0)
         CurrentAnswer1.pop(0)
         CorrectAnswersList.pop(0)
+        ImagesList.pop(0)
     TotalAnswers = 0
     CorrectAnswers = 0
     quizmenu.destroy()
@@ -276,17 +280,13 @@ def newwindow():
     nextquestion()
     try:
         if(CurrentAnswer3[main2]) == ("null"):
-            title3.config(text=QuestionsList[main2])
-            Answer1.config(text=CurrentAnswer1[main2])
-            Answer2.config(text=CurrentAnswer2[main2])
+            configs()
             Answer3.config(text="")
             Answer4.config(text="")
             radiobutton3["state"] = "disabled"
             radiobutton4["state"] = "disabled"
         else:
-            title3.config(text=QuestionsList[main2])
-            Answer1.config(text=CurrentAnswer1[main2])
-            Answer2.config(text=CurrentAnswer2[main2])
+            configs()
             Answer3.config(text=CurrentAnswer3[main2])
             Answer4.config(text=CurrentAnswer4[main2])
             radiobutton3["state"] = "normal"
@@ -295,9 +295,18 @@ def newwindow():
         Pass
     mainindent()
 
+def configs():
+    title3.config(text=QuestionsList[main2])
+    Answer1.config(text=CurrentAnswer1[main2])
+    Answer2.config(text=CurrentAnswer2[main2])
+    image1.config(file=ImagesList[main2])
+
 def nextquestion():
-    title4.destroy()
-    next2.destroy()
+    try:
+        title4.destroy()
+        next2.destroy()
+    except:
+        Pass
 
 def mainindent():
     global main2
