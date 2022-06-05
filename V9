@@ -1,0 +1,312 @@
+from cProfile import label
+from tkinter import *
+from tkinter import ttk
+import random
+import math
+
+root = Tk()
+root.geometry("649x500+303+259")
+root.config(bg = "#4369db")
+
+title = Label(root, text="Year 9 Math Quiz", bg = "#4369db", font=("Cooper Black", 18))
+title.place(x=210, y=0, anchor="nw")
+ 
+start1 = Button(root, text="Start", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: begin())
+start1.place(x=40, y=231.5, width=125, height=37)
+ 
+quit1 = Button(root, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
+quit1.place(x=480, y=231.5, width=125, height=37)
+
+
+QUIZNUM = 12
+ 
+def begin():
+    global QuestionsList
+    global AnswersList
+    global CorrectAnswersList
+    global ImagesList
+    global CurrentAnswer1
+    global CurrentAnswer2
+    global CurrentAnswer3
+    global CurrentAnswer4
+    global CorrectAnswers
+    global TotalAnswers
+    global firstmenu
+    CorrectAnswers = 0
+    TotalAnswers = 0
+    CorrectAnswersList = []
+    AnswersList = []
+    QuestionsList = []
+    ImagesList = []
+    CurrentAnswer1 = []
+    CurrentAnswer2 = []
+    CurrentAnswer3 = []
+    CurrentAnswer4 = []
+    start1["state"] = "disabled"
+    firstmenu = Toplevel()
+    firstmenu.geometry("649x500+952+259")
+    firstmenu.config(bg = "#4369db")
+    title2 = Label(firstmenu, text="Information:", bg = "#4369db", font=("Cooper Black", 16))
+    title2.place(x=250, y=0, anchor="nw")
+    subtitle = Label(firstmenu, text="This is a quiz about year 9 math designed to gage", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle.place(x=120, y=60, anchor="nw")
+    subtitle2 = Label(firstmenu, text="your knowledge of the subject", bg = "#4369db", font=("Cooper Black", 12))
+    subtitle2.place(x=180, y=81, anchor="nw")
+    msg = Label(firstmenu, text="• All questions will include multiple choice or true or false answers", bg = "#4369db", font=("Cooper Black", 11))
+    msg.place(x=10, y=142, anchor="nw")
+    msg2 = Label(firstmenu, text="• Answers will be rounded to 2 d.p", bg = "#4369db", font=("Cooper Black", 11))
+    msg2.place(x=10, y=163, anchor="nw")
+    msg3 = Label(firstmenu, text="• There will also be a button included to skip any number of questions", bg = "#4369db", font=("Cooper Black", 11))
+    msg3.place(x=10, y=184, anchor="nw")
+    msg4 = Label(firstmenu, text="• After you have answered a question you will be required to hit a button to", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=10, y=205, anchor="nw")
+    msg4 = Label(firstmenu, text=" answer another question", bg = "#4369db", font=("Cooper Black", 11))
+    msg4.place(x=14, y=226, anchor="nw")
+    next1 = Button(firstmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: quizbegin())
+    next1.place(x=490, y=10, width=125, height=37)
+    correctanswer = open("D:/CorrectAnswer.txt", "r")
+    CorrectAnswer = ((correctanswer.read()).split("\n"))
+    images = open("D:/Images.txt", "r")
+    Images = ((images.read()).split("\n"))
+    allanswers = open("D:/AllAnswers.txt", "r")
+    AllAnswers = ((allanswers.read()).split("\n"))
+    questions = open("D:/Questions.txt", "r")
+    Questions = ((questions.read()).split("|"))
+    for main in range (len(Questions)):
+        num = (random.randint(0, (len(Questions)-1)))
+        AnswersList.append((AllAnswers).pop(num))
+        QuestionsList.append((Questions).pop(num))
+        CorrectAnswersList.append((CorrectAnswer).pop(num))
+        ImagesList.append((Images).pop(num))
+    for main1 in range (len(AnswersList)):
+        CurrentAnswers = str(AnswersList[main1]).split(",")
+        try:
+            (CurrentAnswer4).append((CurrentAnswers).pop(3))
+            (CurrentAnswer3).append((CurrentAnswers).pop(2))
+            (CurrentAnswer2).append((CurrentAnswers).pop(1))
+            (CurrentAnswer1).append((CurrentAnswers).pop(0))
+        except:
+            (CurrentAnswer1).append((CurrentAnswers).pop(0))
+            (CurrentAnswer2).append((CurrentAnswers).pop(0))
+            (CurrentAnswer3).append("null")
+            (CurrentAnswer4).append("null")
+ 
+def close():
+    root.destroy()
+ 
+#Use less files for trialling, also use a seperate defining method for correct answer
+def quizbegin():
+    global Answer1
+    global Answer2
+    global Answer3
+    global Answer4
+    global main2
+    global radiobutton1
+    global radiobutton2
+    global radiobutton3
+    global radiobutton4
+    global title3
+    global skip
+    global quizmenu
+    global image1
+    main2 = 0
+    firstmenu.geometry("+9999+9999")
+   
+    quizmenu = Toplevel()
+    quizmenu.geometry("649x500+952+259")
+    quizmenu.config(bg = "#4369db")
+    title3 = Label(quizmenu, text=QuestionsList[main2], bg = "#4369db", font=("Cooper Black", 16))
+    title3.place(x=324, y=0, anchor="n")
+    skip = Button(quizmenu, text="Skip", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: Skip())
+    skip.place(x=7.5, y=448, width=634, height=37)
+    image1 = PhotoImage(file=ImagesList[main2])
+    labelphoto2 = Label(quizmenu, image=image1, width=547, height=355, bg = "#4369db")
+    labelphoto2.place(x=7.5, y=75)
+    if(CurrentAnswer3[main2]) == ("null"):
+        radiobutton1 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: correctanswer())
+        radiobutton1.place(x=630, y=60)
+        Answer1 = Label(quizmenu, text=CurrentAnswer1[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer1.place(x=632, y=70, anchor="e")
+        radiobutton2 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton2.place(x=630, y=80)
+        Answer2 = Label(quizmenu, text=CurrentAnswer2[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer2.place(x=632, y=90, anchor="e")
+        radiobutton3 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton3.place(x=630, y=100)
+        radiobutton3["state"] = "disabled"
+        Answer3 = Label(quizmenu, text="", bg = "#4369db", font=("Cooper Black", 12))
+        Answer3.place(x=632, y=110, anchor="e")
+        radiobutton4 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton4.place(x=630, y=120)
+        radiobutton4["state"] = "disabled"
+        Answer4 = Label(quizmenu, text="", bg = "#4369db", font=("Cooper Black", 12))
+        Answer4.place(x=632, y=130, anchor="e")
+    else:
+        radiobutton1 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: correctanswer())
+        radiobutton1.place(x=630, y=60)
+        Answer1 = Label(quizmenu, text=CurrentAnswer1[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer1.place(x=632, y=70, anchor="e")
+        radiobutton2 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton2.place(x=630, y=80)
+        Answer2 = Label(quizmenu, text=CurrentAnswer2[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer2.place(x=632, y=90, anchor="e")
+        radiobutton3 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton3.place(x=630, y=100)
+        Answer3 = Label(quizmenu, text=CurrentAnswer3[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer3.place(x=632, y=110, anchor="e")
+        radiobutton4 = Radiobutton(quizmenu, bg = "#4369db", command=lambda: incorrectanswer())
+        radiobutton4.place(x=630, y=120)
+        Answer4 = Label(quizmenu, text=CurrentAnswer4[main2], bg = "#4369db", font=("Cooper Black", 12))
+        Answer4.place(x=632, y=130, anchor="e")
+    mainindent()
+
+def Skip():
+    global main2
+    QuestionsList.append((QuestionsList).pop(0))
+    CurrentAnswer4.append((CurrentAnswer4).pop(0))
+    CurrentAnswer3.append((CurrentAnswer3).pop(0))
+    CurrentAnswer2.append((CurrentAnswer2).pop(0))
+    CurrentAnswer1.append((CurrentAnswer1).pop(0))
+    CorrectAnswersList.append((CorrectAnswersList).pop(0))
+    ImagesList.append((ImagesList).pop(0))
+    newwindow()
+    main2 -=1
+ 
+def incorrectanswer():
+    global TotalAnswers
+    global incorrect
+    incorrect = 1
+    TotalAnswers += 1
+    postquestion()
+    if TotalAnswers == QUIZNUM:
+        quizcomplete()
+
+def correctanswer():
+    global TotalAnswers
+    global CorrectAnswers
+    global incorrect
+    incorrect = 0
+    CorrectAnswers += 1
+    postquestion()
+    TotalAnswers += 1
+    if TotalAnswers == QUIZNUM:
+        quizcomplete()
+
+def postquestion():
+    hide()
+    global title4
+    global next2
+    if incorrect == 1:
+        title4 = Label(quizmenu, text="Incorrect!", bg = "#4369db", font=("Cooper Black", 12))
+        title4.place(x=324, y=0, anchor="n")
+    else:
+        title4 = Label(quizmenu, text="Correct!", bg = "#4369db", font=("Cooper Black", 12))
+        title4.place(x=324, y=0, anchor="n")
+    next2 = Button(quizmenu, text="Next", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: newwindow())
+    next2.place(x=262, y=448, width=125, height=37)
+
+def quizcomplete():
+    global CorrectAnswers
+    nextquestion()
+    title3.place(x=324, y=0, anchor="n")
+    grade = Label(quizmenu, text="{}/12" .format (CorrectAnswers),  bg = "#4369db", font=("Cooper Black", 12))
+    grade.place(x=324, y=30, anchor="n")
+    if CorrectAnswers <= (float(QUIZNUM/4)):
+        title3.config(text="Not Achieved")
+        msg = Label(quizmenu, text="Nice try!", bg = "#4369db", font=("Cooper Black", 12))
+        msg.place(x=324, y=50, anchor="n")
+    elif CorrectAnswers <= (float(QUIZNUM/2)):
+        title3.config(text="Achieved")
+        msg = Label(quizmenu, text="Getting there!", bg = "#4369db", font=("Cooper Black", 12))
+        msg.place(x=324, y=50, anchor="n")
+    elif CorrectAnswers <= (float(QUIZNUM*0.75)):
+        title3.config(text="Merit")
+        msg = Label(quizmenu, text="Nearly at an excellence!", bg = "#4369db", font=("Cooper Black", 12))
+        msg.place(x=324, y=50, anchor="n")
+    elif CorrectAnswers <= (float(QUIZNUM)):
+        title3.config(text="Excellence")
+        msg = Label(quizmenu, text="Congratulations!", bg = "#4369db", font=("Cooper Black", 12))
+        msg.place(x=324, y=50, anchor="n")
+    try:
+        retaken == 1
+        quit2 = Button(quizmenu, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
+        quit2.place(x=500, y=440, width=125, height=37)
+    except:
+        retake_button = Button(quizmenu, text="Retake Test?", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: retake())
+        retake_button.place(x=500, y=370, width=125, height=37)
+
+        quit2 = Button(quizmenu, text="Quit", bg = "#FFFFFF", font=("Cooper Black", 12), command=lambda: close())
+        quit2.place(x=500, y=440, width=125, height=37)
+
+def retake():
+    global TotalAnswers
+    global CorrectAnswers
+    global retaken
+    for main3 in range (QUIZNUM):
+        QuestionsList.pop(0)
+        CurrentAnswer4.pop(0)
+        CurrentAnswer3.pop(0)
+        CurrentAnswer2.pop(0)
+        CurrentAnswer1.pop(0)
+        CorrectAnswersList.pop(0)
+        ImagesList.pop(0)
+    TotalAnswers = 0
+    CorrectAnswers = 0
+    quizmenu.destroy()
+    retaken = 1
+    quizbegin()
+
+def hide():
+    Answer1.config(text="")
+    Answer2.config(text="")
+    Answer3.config(text="")
+    Answer4.config(text="")
+    radiobutton1.place(x=9999, y=9999)
+    radiobutton2.place(x=9999, y=9999)
+    radiobutton3.place(x=9999, y=9999)
+    radiobutton4.place(x=9999, y=9999)
+    skip.place(x=9999, y=9999)
+    title3.place(x=9999, y=9999)
+ 
+def newwindow():
+    radiobutton1.place(x=630, y=60)
+    radiobutton2.place(x=630, y=80)
+    radiobutton3.place(x=630, y=100)
+    radiobutton4.place(x=630, y=120)
+    skip.place(x=7.5, y=448)
+    title3.place(x=324, y=0, anchor="n")
+    nextquestion()
+    try:
+        if(CurrentAnswer3[main2]) == ("null"):
+            configs()
+            Answer3.config(text="")
+            Answer4.config(text="")
+            radiobutton3["state"] = "disabled"
+            radiobutton4["state"] = "disabled"
+        else:
+            configs()
+            Answer3.config(text=CurrentAnswer3[main2])
+            Answer4.config(text=CurrentAnswer4[main2])
+            radiobutton3["state"] = "normal"
+            radiobutton4["state"] = "normal"
+    except:
+        ()
+    mainindent()
+
+def configs():
+    title3.config(text=QuestionsList[main2])
+    Answer1.config(text=CurrentAnswer1[main2])
+    Answer2.config(text=CurrentAnswer2[main2])
+    image1.config(file=ImagesList[main2])
+
+def nextquestion():
+    try:
+        title4.destroy()
+        next2.destroy()
+    except:
+        ()
+
+def mainindent():
+    global main2
+    main2 += 1
+root.mainloop()
